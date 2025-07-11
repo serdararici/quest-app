@@ -10,7 +10,7 @@ import com.example.questapp.entities.User;
 @Service
 public class UserService {
 
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;

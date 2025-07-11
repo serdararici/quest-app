@@ -1,7 +1,6 @@
 package com.example.questapp.webApi.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.questapp.business.UserService;
-import com.example.questapp.dataAccess.abstracts.UserRepository;
 import com.example.questapp.entities.User;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	UserService userService;
+	private UserService userService;
 	
 	public UserController(UserService userService) {
 		this.userService = userService;
