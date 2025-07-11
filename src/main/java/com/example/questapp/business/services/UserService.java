@@ -1,4 +1,4 @@
-package com.example.questapp.business;
+package com.example.questapp.business.services;
 
 import java.util.List;
 import java.util.Optional;
