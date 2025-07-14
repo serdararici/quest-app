@@ -3,8 +3,6 @@ package com.example.questapp.entities;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,10 +21,9 @@ public class Post {
 	@Id
 	Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)   //fetch lazy means we don't need user object when we call posts
+	@ManyToOne(fetch = FetchType.EAGER) 
 	@JoinColumn(name="user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)  // when user is deleted, it deletes post that belongs to the user.
-	@JsonIgnore
 	User user;
 	
 	String title;

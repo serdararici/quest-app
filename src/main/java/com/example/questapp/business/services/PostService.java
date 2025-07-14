@@ -2,11 +2,13 @@ package com.example.questapp.business.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.questapp.business.requests.PostCreateRequest;
 import com.example.questapp.business.requests.PostUpdateRequest;
+import com.example.questapp.business.responses.PostResponse;
 import com.example.questapp.dataAccess.abstracts.PostRepository;
 import com.example.questapp.entities.Post;
 import com.example.questapp.entities.User;
@@ -22,10 +24,15 @@ public class PostService {
 		this.userService = userService;
 	}
 
-	public List<Post> getAllPosts(Optional<Long> userId) {
-		if(userId.isPresent())
-			return postRepository.findByUserId(userId.get());
-		return postRepository.findAll();
+	public List<PostResponse> getAllPosts(Optional<Long> userId) {
+		List<Post> list;
+		if(userId.isPresent()) {
+			list = postRepository.findByUserId(userId.get());
+		} else {
+			list = postRepository.findAll();
+		}
+		return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
+			
 	}
 
 	public Post getOnePostById(Long postId) {
