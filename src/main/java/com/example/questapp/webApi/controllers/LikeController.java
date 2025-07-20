@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.questapp.business.requests.LikeCreateRequest;
+import com.example.questapp.business.responses.LikeResponse;
 import com.example.questapp.business.services.LikeService;
 import com.example.questapp.entities.Like;
 
@@ -28,7 +29,7 @@ public class LikeController {
 	}
 	
 	@GetMapping
-	public List<Like> getAllLikes(@RequestParam Optional<Long> postId, @RequestParam Optional<Long> userId) {
+	public List<LikeResponse> getAllLikes(@RequestParam Optional<Long> postId, @RequestParam Optional<Long> userId) {
 		return likeService.getAllLikesWithParam(postId, userId);
 	}
 	

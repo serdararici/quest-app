@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.questapp.business.requests.PostCreateRequest;
 import com.example.questapp.business.requests.PostUpdateRequest;
+import com.example.questapp.business.responses.LikeResponse;
 import com.example.questapp.business.responses.PostResponse;
+import com.example.questapp.dataAccess.abstracts.LikeRepository;
 import com.example.questapp.dataAccess.abstracts.PostRepository;
+import com.example.questapp.entities.Like;
 import com.example.questapp.entities.Post;
 import com.example.questapp.entities.User;
 
@@ -18,10 +21,15 @@ public class PostService {
 
 	private PostRepository postRepository;
 	private UserService userService;
+	private LikeService likeService;
 
 	public PostService(PostRepository postRepository, UserService userService) {
 		this.postRepository = postRepository;
 		this.userService = userService;
+	}
+	
+	public void setLikeService(LikeService likeService) {
+		this.likeService = likeService;
 	}
 
 	public List<PostResponse> getAllPosts(Optional<Long> userId) {
@@ -31,7 +39,9 @@ public class PostService {
 		} else {
 			list = postRepository.findAll();
 		}
-		return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
+		return list.stream().map(p -> { 
+			List<LikeResponse> likes = likeService.getAllLikesWithParam(null, Optional.of(p.getId()));
+			return new PostResponse(p, likes);}).collect(Collectors.toList());
 			
 	}
 
