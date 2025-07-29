@@ -51,12 +51,15 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
     
+    
+    
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOriginPattern("*");
+        //config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("HEAD");
@@ -78,12 +81,12 @@ public class SecurityConfig {
     		.exceptionHandling().authenticationEntryPoint(handler).and()
     		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
     		.authorizeHttpRequests() 
+    		.requestMatchers("/api/auth/**")
+    		.permitAll()
     		.requestMatchers(HttpMethod.GET, "/posts")
     		.permitAll()
     		.requestMatchers(HttpMethod.GET, "/comments")
-    		.permitAll()
-    		.requestMatchers("/auth/**")
-    		.permitAll()
+    		.permitAll()   		
     		.anyRequest().authenticated();
     		
     	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
