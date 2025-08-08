@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.example.questapp.entities.Comment;
 import com.example.questapp.entities.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {

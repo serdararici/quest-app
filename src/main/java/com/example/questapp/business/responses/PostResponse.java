@@ -2,7 +2,6 @@ package com.example.questapp.business.responses;
 
 import java.util.List;
 
-import com.example.questapp.entities.Like;
 import com.example.questapp.entities.Post;
 
 import lombok.Data;

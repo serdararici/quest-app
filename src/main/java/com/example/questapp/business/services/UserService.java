@@ -10,8 +10,6 @@ import com.example.questapp.dataAccess.abstracts.CommentRepository;
 import com.example.questapp.dataAccess.abstracts.LikeRepository;
 import com.example.questapp.dataAccess.abstracts.PostRepository;
 import com.example.questapp.dataAccess.abstracts.UserRepository;
-import com.example.questapp.entities.Comment;
-import com.example.questapp.entities.Like;
 import com.example.questapp.entities.User;
 
 @Service
