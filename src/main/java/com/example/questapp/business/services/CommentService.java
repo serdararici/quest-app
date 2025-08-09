@@ -3,17 +3,23 @@ package com.example.questapp.business.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.questapp.business.requests.CommentCreateRequest;
 import com.example.questapp.business.requests.CommentUpdateRequest;
+import com.example.questapp.business.responses.CommentResponse;
 import com.example.questapp.dataAccess.abstracts.CommentRepository;
 import com.example.questapp.entities.Comment;
 import com.example.questapp.entities.Post;
 import com.example.questapp.entities.User;
 
+
+
 @Service
+@Transactional
 public class CommentService {
 	
 	private CommentRepository commentRepository;
@@ -28,17 +34,18 @@ public class CommentService {
 		this.postService = postService;
 	}
 
-	public List<Comment> getAllCommentsWithParam(Optional<Long> userId, Optional<Long> postId) {
+	@Transactional(readOnly = true)
+	public List<CommentResponse> getAllCommentsWithParam(Optional<Long> userId, Optional<Long> postId) {
+		List<Comment> comments;
 		if(userId.isPresent() && postId.isPresent()) {
-			return commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
-		} else if(userId.isPresent()){
-			return commentRepository.findByUserId(userId.get());
-		} else if(postId.isPresent()){
-			return commentRepository.findByPostId(postId.get());
-		} else {
-			return commentRepository.findAll();
-		}
-	
+			comments = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
+		}else if(userId.isPresent()) {
+			comments = commentRepository.findByUserId(userId.get());
+		}else if(postId.isPresent()) {
+			comments = commentRepository.findByPostId(postId.get());
+		}else
+			comments = commentRepository.findAll();
+		return comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
 	}
 	
 	public Comment getOneCommentById(Long commentId) {
