@@ -1,6 +1,7 @@
 package com.example.questapp.webApi.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,18 @@ public class UserController {
 	public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
 		return userService.updateOneUser(userId, newUser);
 	}
+	
+	@PutMapping("/{userId}/avatar")
+	public User updateUserAvatar(@PathVariable Long userId, @RequestBody Map<String, Integer> body) {
+	    Integer avatarId = body.get("avatarId");
+	    if (avatarId == null) {
+	        throw new IllegalArgumentException("avatarId is required");
+	    }
+	    return userService.updateUserAvatar(userId, avatarId);
+	}
+
+
+
 	
 	@DeleteMapping("/{userId}")
 	public void deleteOneUser(@PathVariable Long userId) {

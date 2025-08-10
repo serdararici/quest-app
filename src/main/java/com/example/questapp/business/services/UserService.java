@@ -53,6 +53,18 @@ public class UserService {
 			return null;
 		}
 	}
+	
+	public User updateUserAvatar(Long userId, int avatarId) {
+	    Optional<User> userOpt = userRepository.findById(userId);
+	    if (userOpt.isPresent()) {
+	        User foundUser = userOpt.get();
+	        foundUser.setAvatar(avatarId);
+	        return userRepository.save(foundUser);
+	    }
+	    return null;
+	}
+
+
 
 	public void deleteById(Long userId) {
 		userRepository.deleteById(userId);
@@ -65,7 +77,7 @@ public class UserService {
 	public List<Object> getUserActivity(Long userId) {
 		List<Long> postIds = postRepository.findTopByUserId(userId);
 		if(postIds.isEmpty()) 
-			return null;
+			return new ArrayList<>();
 		List<Object> comments = commentRepository.findUserCommentsByPostId(postIds);
 		List<Object> likes =likeRepository.findUserLikesByPostId(postIds);
 		List<Object> result = new ArrayList<>();
@@ -73,5 +85,7 @@ public class UserService {
 		result.addAll(likes);
 		return result;	 
 	}
+
+	
 	
 }
