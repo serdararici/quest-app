@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.questapp.business.requests.RefreshRequest;
 import com.example.questapp.business.requests.UserRequest;
 import com.example.questapp.business.responses.AuthResponse;
 import com.example.questapp.business.services.RefreshTokenService;
@@ -83,6 +84,26 @@ private AuthenticationManager authenticationManager;
 		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
 		authResponse.setUserId(user.getId());
 		return new ResponseEntity<>(authResponse, HttpStatus.CREATED);	
+	}
+	
+	@PostMapping("/refresh")
+	public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+		AuthResponse response = new AuthResponse();
+		RefreshToken token = refreshTokenService.getByUser(refreshRequest.getUserId());
+		if(token.getToken().equals(refreshRequest.getRefreshToken()) &&
+				!refreshTokenService.isRefreshExpired(token)) {
+
+			User user = token.getUser();
+			String jwtToken = jwtTokenProvider.generateJwtTokenByUserId(user.getId());
+			response.setMessage("token successfully refreshed.");
+			response.setAccessToken("Bearer " + jwtToken);
+			response.setUserId(user.getId());
+			return new ResponseEntity<>(response, HttpStatus.OK);		
+		} else {
+			response.setMessage("refresh token is not valid.");
+			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+		}
+		
 	}
 	
 	
