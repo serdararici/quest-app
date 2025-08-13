@@ -38,13 +38,13 @@ private AuthenticationManager authenticationManager;
 	
 	
     public AuthController(AuthenticationManager authenticationManager, UserService userService, 
-    		PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider
+    		PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider,  RefreshTokenService refreshTokenService
     		) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
-        //this.refreshTokenService = refreshTokenService;
+        this.refreshTokenService = refreshTokenService;
     }
 	
 	@PostMapping("/login")
